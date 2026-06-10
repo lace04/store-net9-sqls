@@ -1,0 +1,135 @@
+@model List<ProductVM>
+
+@{
+    ViewData["Title"] = "Products";
+    var selectedCategoryId = Context.Request.Query["categoryId"];
+}
+
+@if (TempData["Success"] is string successMsg)
+{
+  <div class="bg-pure-white border border-ash text-charcoal px-4 py-3 rounded-cards mb-4 tracking-[0.009em]" role="alert">
+    <span class="font-medium">&#10003;</span> @successMsg
+  </div>
+}
+
+@if (TempData["Error"] is string errorMsg)
+{
+  <div class="bg-pure-white border border-ash text-ink-black px-4 py-3 rounded-cards mb-4 tracking-[0.009em]" role="alert">
+    <span class="font-medium">&#33;</span> @errorMsg
+  </div>
+}
+
+<!-- Header -->
+<div class="flex justify-between items-center mb-6">
+  <h1 class="font-nantes text-ink-black text-[22px] leading-[1.45]">Products</h1>
+  <a asp-action="AddEdit"
+    class="inline-flex items-center gap-2 px-4 py-2 bg-ink-black text-pure-white text-sm rounded-buttons hover:bg-charcoal focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ink-black"
+    aria-label="Create new product">
+    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+    </svg>
+    Create new
+  </a>
+</div>
+
+<!-- Search and Filter -->
+<div class="mb-6 space-y-4">
+  <div class="relative max-w-md">
+    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-smoke pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+    <input type="text" id="product-search" placeholder="Search products..."
+      class="w-full pl-12 pr-4 py-2.5 bg-pure-white border border-ash rounded-pills text-sm text-charcoal placeholder-charcoal
+             focus:outline-none focus:ring-2 focus:ring-ink-black/20 focus:border-ink-black" />
+  </div>
+
+  <div class="flex flex-wrap gap-3" role="group" aria-label="Filter by category">
+    <a asp-action="Index"
+      class="inline-flex items-center px-6 py-2 text-sm rounded-pills border transition-colors
+        @(string.IsNullOrEmpty(selectedCategoryId) ? "bg-ink-black text-pure-white border-ink-black" : "bg-pure-white text-ink-black border-charcoal hover:bg-cream-paper")">
+      All
+    </a>
+    @foreach (var cat in (IEnumerable<SelectListItem>)ViewBag.Categories)
+    {
+      <a asp-action="Index" asp-route-categoryId="@cat.Value"
+        class="inline-flex items-center px-6 py-2 text-sm rounded-pills border transition-colors
+          @(selectedCategoryId == cat.Value ? "bg-ink-black text-pure-white border-ink-black" : "bg-pure-white text-ink-black border-charcoal hover:bg-cream-paper")">
+        @cat.Text
+      </a>
+    }
+  </div>
+</div>
+
+<hr class="mb-6 border-ash" />
+
+@if (Model.Count == 0)
+{
+  <div class="text-center py-16 text-smoke" role="status">
+    <p class="text-body">No products found</p>
+    <p class="text-caption mt-1">Get started by creating a new product.</p>
+  </div>
+}
+else
+{
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    @foreach (var product in Model)
+    {
+      <div class="bg-pure-white border border-ash rounded-cards p-4 flex flex-col">
+        <!-- Image placeholder -->
+        <div class="aspect-square bg-cream-paper rounded-[4px] mb-3 flex items-center justify-center border border-ash overflow-hidden">
+          @if (!string.IsNullOrEmpty(product.ImageName))
+          {
+            <img src="~/images/products/@product.ImageName" alt="@product.Name" class="w-full h-full object-cover" />
+          }
+          else
+          {
+            <svg class="w-10 h-10 text-ash" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          }
+        </div>
+
+        <!-- Category label -->
+        <span class="text-caption text-smoke mb-1">@product.CategoryName</span>
+
+        <!-- Product name -->
+        <h3 class="text-sm text-charcoal font-medium mb-1 leading-snug">@product.Name</h3>
+
+        <!-- Price and Stock -->
+        <div class="flex items-center justify-between mt-auto pt-3">
+          <span class="text-sm text-ink-black font-medium">$@product.Price.ToString("N2")</span>
+          @if (product.Stock > 0)
+          {
+            <span class="text-caption text-smoke">@product.Stock in stock</span>
+          }
+          else
+          {
+            <span class="text-caption text-smoke">Out of stock</span>
+          }
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-ash">
+          <a asp-action="AddEdit" asp-route-id="@product.ProductId"
+            class="inline-flex items-center justify-center p-2 text-charcoal hover:text-ink-black hover:bg-cream-paper rounded-cards focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ink-black"
+            aria-label="Edit @product.Name" title="Edit product">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </a>
+          <form method="post" asp-action="Delete" class="inline" onsubmit="return confirm('Are you sure you want to delete this product?');">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@product.ProductId" />
+            <button type="submit"
+              class="inline-flex items-center justify-center p-2 text-smoke hover:text-ink-black hover:bg-cream-paper rounded-cards focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ink-black"
+              aria-label="Delete @product.Name" title="Delete product">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    }
+  </div>
+}
