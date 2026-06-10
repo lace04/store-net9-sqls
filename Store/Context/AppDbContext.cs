@@ -12,7 +12,7 @@ namespace Store.Context
 
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
-    public DbSet<User> users { get; set; }
+    public DbSet<User> Users { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
 
@@ -54,7 +54,7 @@ namespace Store.Context
         e.HasIndex(u => u.Email).IsUnique();
       });
 
-      // Configure Order entity, its relationship with User, and ensure cascading deletes so that when a user is deleted, their orders are also deleted
+      // Configure Order entity, its relationship with User, and restrict cascade deletes to prevent accidental data loss
       modelBuilder.Entity<Order>(e =>
       {
         e.HasKey("OrderId");

@@ -5,10 +5,9 @@ namespace Store.Controllers
 {
   public class CategoryController(CategoryService _categoryService) : Controller
   {
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-      // Get list of categories from database
-      var categories = _categoryService.GetAllAsync().Result;
+      var categories = await _categoryService.GetAllAsync();
       return View(categories);
     }
   }
