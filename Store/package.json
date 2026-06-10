@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tailwindcss -i wwwroot/css/site.css -o wwwroot/css/app.css --watch",
-    "build": "tailwindcss -i wwwroot/css/site.css -o wwwroot/css/app.css"
+    "build": "tailwindcss -i wwwroot/css/site.css -o wwwroot/css/app.css --minify"
   },
   "keywords": [],
   "author": "",
