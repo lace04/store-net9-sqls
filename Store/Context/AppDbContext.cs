@@ -27,9 +27,9 @@ namespace Store.Context
         e.HasKey("CategoryId");
         e.Property("CategoryId").ValueGeneratedOnAdd();
         e.HasData(
-          new Category { CategoryId = 1, Name = "Electronics" },
-          new Category { CategoryId = 2, Name = "Books" },
-          new Category { CategoryId = 3, Name = "Clothing" }
+          new Category { CategoryId = 1, Name = "Electronics", Description = "Electronic devices and accessories" },
+          new Category { CategoryId = 2, Name = "Books", Description = "Books and publications" },
+          new Category { CategoryId = 3, Name = "Clothing", Description = "Apparel and fashion items" }
         );
       });
 
@@ -71,7 +71,7 @@ namespace Store.Context
         {
           e.HasKey("OrderItemId");
           e.Property("OrderItemId").ValueGeneratedOnAdd();
-          e.Property("UnitPrice").HasColumnType("decimal(10,2)");
+          e.Property(oi => oi.Price).HasColumnType("decimal(10,2)");
           e.HasOne(oi => oi.Order)
             .WithMany(o => o.OrderItems)
             .HasForeignKey(oi => oi.OrderId)
