@@ -5,8 +5,39 @@ using Store.Repositories;
 
 namespace Store.Services
 {
-  public class ProductService(GenericRepository<Product> _productRepository)
+  public class ProductService(
+    GenericRepository<Product> _productRepository,
+    IWebHostEnvironment _env)
   {
+    private static string ImagesPath => "images/products";
+
+    private async Task<string?> SaveImageAsync(IFormFile? imageFile)
+    {
+      if (imageFile == null || imageFile.Length == 0) return null;
+
+      var uploads = Path.Combine(_env.WebRootPath, ImagesPath);
+      Directory.CreateDirectory(uploads);
+
+      var ext = Path.GetExtension(imageFile.FileName);
+      var fileName = $"{Guid.NewGuid()}{ext}";
+      var filePath = Path.Combine(uploads, fileName);
+
+      using (var stream = new FileStream(filePath, FileMode.Create))
+      {
+        await imageFile.CopyToAsync(stream);
+      }
+
+      return fileName;
+    }
+
+    private void DeleteImage(string? imageName)
+    {
+      if (string.IsNullOrEmpty(imageName)) return;
+      var filePath = Path.Combine(_env.WebRootPath, ImagesPath, imageName);
+      if (File.Exists(filePath))
+        File.Delete(filePath);
+    }
+
     public async Task<IEnumerable<ProductVM>> GetAllAsync(int? categoryId = null)
     {
       var products = await _productRepository.GetAllAsync(p => p.Category);
@@ -57,9 +88,14 @@ namespace Store.Services
           Name = productVM.Name,
           Description = productVM.Description,
           Price = productVM.Price,
-          Stock = productVM.Stock,
-          ImageName = productVM.ImageName
+          Stock = productVM.Stock
         };
+
+        if (productVM.ImageFile != null)
+          product.ImageName = await SaveImageAsync(productVM.ImageFile);
+        else
+          product.ImageName = productVM.ImageName;
+
         await _productRepository.AddAsync(product);
       }
       else
@@ -72,7 +108,13 @@ namespace Store.Services
           product.Description = productVM.Description;
           product.Price = productVM.Price;
           product.Stock = productVM.Stock;
-          product.ImageName = productVM.ImageName;
+
+          if (productVM.ImageFile != null)
+          {
+            DeleteImage(product.ImageName);
+            product.ImageName = await SaveImageAsync(productVM.ImageFile);
+          }
+
           await _productRepository.UpdateAsync(product);
         }
       }
@@ -83,6 +125,7 @@ namespace Store.Services
       var product = await _productRepository.GetByIdAsync(id);
       if (product != null)
       {
+        DeleteImage(product.ImageName);
         await _productRepository.DeleteAsync(product);
       }
     }

@@ -16,23 +16,27 @@ function showConfirmModal(formId, itemName) {
   deleteTarget = document.getElementById(formId);
   document.getElementById('confirm-item-name').textContent = itemName;
   var modal = document.getElementById('confirm-modal');
-  var card = modal.lastElementChild;
+  var card = document.getElementById('modal-card');
 
   modal.classList.remove('hidden');
   void modal.offsetWidth;
-  modal.classList.remove('opacity-0');
-  card.classList.remove('scale-95');
+  modal.classList.add('modal-show');
+  card.classList.add('modal-card-show');
 }
 
 function hideConfirmModal() {
   var modal = document.getElementById('confirm-modal');
-  var card = modal.lastElementChild;
+  var card = document.getElementById('modal-card');
 
-  modal.classList.add('opacity-0');
-  card.classList.add('scale-95');
+  modal.classList.remove('modal-show');
+  card.classList.remove('modal-card-show');
+  modal.classList.add('modal-hide');
+  card.classList.add('modal-card-hide');
 
   setTimeout(function () {
     modal.classList.add('hidden');
+    modal.classList.remove('modal-hide');
+    card.classList.remove('modal-card-hide');
     deleteTarget = null;
   }, 200);
 }

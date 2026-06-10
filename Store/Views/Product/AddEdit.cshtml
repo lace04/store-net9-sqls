@@ -89,6 +89,21 @@
         <span asp-validation-for="Category.CategoryId" class="text-smoke text-sm mt-1 block"></span>
       </div>
 
+      <!-- Image upload -->
+      <div>
+        <label asp-for="ImageFile" class="block text-sm text-charcoal mb-1.5 tracking-[0.009em]">Product Image</label>
+        <input asp-for="ImageFile" type="file" accept="image/*"
+          class="w-full px-4 py-2.5 border border-ash rounded-inputs text-sm text-charcoal bg-pure-white file:mr-4 file:py-1.5 file:px-4 file:border-0 file:rounded-buttons file:bg-ink-black file:text-pure-white file:text-sm file:cursor-pointer" />
+        <span asp-validation-for="ImageFile" class="text-smoke text-sm mt-1 block"></span>
+        @if (Model.ProductId != 0 && !string.IsNullOrEmpty(Model.ImageName))
+        {
+          <div class="mt-3 flex items-center gap-3">
+            <img src="~/images/products/@Model.ImageName" alt="Current image" class="w-20 h-20 object-cover rounded-cards border border-ash" />
+            <span class="text-caption text-smoke">@Model.ImageName</span>
+          </div>
+        }
+      </div>
+
       <!-- Validation summary -->
       <div asp-validation-summary="ModelOnly" class="text-ink-black text-sm" role="alert"></div>
 
