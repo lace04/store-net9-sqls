@@ -3,7 +3,7 @@
 <div class="flex justify-between items-center mb-4">
   <h1 class="text-2xl font-semibold text-primary">Categories</h1>
   <a
-    href="#"
+    asp-action="Create"
     class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-md hover:bg-accent-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
     aria-label="Create new category"
   >
@@ -43,8 +43,9 @@ else
             <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-light">@category.Name</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">@category.Description</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-              <form method="post" class="inline" style="display:inline">
+              <form method="post" asp-action="Edit" class="inline">
                 @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@category.CategoryId" />
                 <button type="submit"
                   class="inline-flex items-center justify-center p-2 text-primary-light hover:text-primary hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                   aria-label="Edit category @category.Name"
@@ -55,8 +56,9 @@ else
                   </svg>
                 </button>
               </form>
-              <form method="post" class="inline" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this category?');">
+              <form method="post" asp-action="Delete" class="inline" onsubmit="return confirm('Are you sure you want to delete this category?');">
                 @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@category.CategoryId" />
                 <button type="submit"
                   class="inline-flex items-center justify-center p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                   aria-label="Delete category @category.Name"
