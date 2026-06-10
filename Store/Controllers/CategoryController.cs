@@ -32,6 +32,11 @@ namespace Store.Controllers
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddEdit(CategoryVM categoryVM)
     {
+      if (string.IsNullOrWhiteSpace(categoryVM.Name))
+        ModelState.AddModelError("Name", "Name is required.");
+      if (string.IsNullOrWhiteSpace(categoryVM.Description))
+        ModelState.AddModelError("Description", "Description is required.");
+
       if (!ModelState.IsValid)
       {
         return View(categoryVM);
@@ -39,7 +44,7 @@ namespace Store.Controllers
 
       try
       {
-        bool isNew = categoryVM.CategoryId == 0;
+        bool isNew = categoryVM.CategoryId is null or 0;
         await _categoryService.AddAsync(categoryVM);
         TempData["Success"] = isNew
           ? "Category created successfully."

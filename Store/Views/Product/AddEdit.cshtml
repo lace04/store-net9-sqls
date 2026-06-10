@@ -80,13 +80,13 @@
 
       <!-- Category dropdown -->
       <div>
-        <label asp-for="CategoryId" class="block text-sm text-charcoal mb-1.5 tracking-[0.009em]"></label>
-        <select asp-for="CategoryId" asp-items="@((IEnumerable<SelectListItem>)ViewBag.Categories)"
+        <label class="block text-sm text-charcoal mb-1.5 tracking-[0.009em]">Category</label>
+        <select asp-for="Category.CategoryId" asp-items="Model.Categories"
           class="w-full px-4 py-2.5 border border-ash rounded-inputs text-sm text-charcoal bg-pure-white
                  focus:outline-none focus:ring-2 focus:ring-ink-black/20 focus:border-ink-black">
           <option value="">Select a category</option>
         </select>
-        <span asp-validation-for="CategoryId" class="text-smoke text-sm mt-1 block"></span>
+        <span asp-validation-for="Category.CategoryId" class="text-smoke text-sm mt-1 block"></span>
       </div>
 
       <!-- Validation summary -->

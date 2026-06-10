@@ -6,7 +6,7 @@ using Store.Services;
 
 namespace Store.Controllers
 {
-  public class ProductController(ProductService _productService, CategoryService _categoryService) : Controller
+  public class ProductController(ProductService _productService, CategoryService _categoryService, ILogger<ProductController> _logger) : Controller
   {
     public async Task<IActionResult> Index(int? categoryId)
     {
@@ -21,28 +21,41 @@ namespace Store.Controllers
     [HttpGet]
     public async Task<IActionResult> AddEdit(int? id)
     {
-      ViewBag.Categories = (await _categoryService.GetAllAsync()).Select(c =>
+      var categories = (await _categoryService.GetAllAsync()).Select(c =>
         new SelectListItem { Value = c.CategoryId.ToString(), Text = c.Name }
-      );
+      ).ToList();
 
       if (id.HasValue)
       {
         var product = await _productService.GetByIdAsync(id.Value);
         if (product == null) return NotFound();
+        product.Categories = categories;
         return View(product);
       }
-      return View(new ProductVM());
+      return View(new ProductVM { Categories = categories });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddEdit(ProductVM productVM)
     {
+      if (productVM.Category?.CategoryId is null)
+      {
+        ModelState.AddModelError("Category.CategoryId", "Please select a category.");
+      }
+
       if (!ModelState.IsValid)
       {
-        ViewBag.Categories = (await _categoryService.GetAllAsync()).Select(c =>
+        foreach (var kv in ModelState)
+        {
+          foreach (var err in kv.Value.Errors)
+          {
+            _logger.LogWarning("ModelState error: {Key} = {ErrorMessage}", kv.Key, err.ErrorMessage);
+          }
+        }
+        productVM.Categories = (await _categoryService.GetAllAsync()).Select(c =>
           new SelectListItem { Value = c.CategoryId.ToString(), Text = c.Name }
-        );
+        ).ToList();
         return View(productVM);
       }
 
@@ -57,10 +70,11 @@ namespace Store.Controllers
       }
       catch (Exception ex)
       {
+        _logger.LogError(ex, "Error creating product");
         ModelState.AddModelError("", $"An error occurred: {ex.Message}");
-        ViewBag.Categories = (await _categoryService.GetAllAsync()).Select(c =>
+        productVM.Categories = (await _categoryService.GetAllAsync()).Select(c =>
           new SelectListItem { Value = c.CategoryId.ToString(), Text = c.Name }
-        );
+        ).ToList();
         return View(productVM);
       }
     }

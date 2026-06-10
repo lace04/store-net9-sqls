@@ -1,7 +1,7 @@
 ﻿@model CategoryVM
 
 @{
-    ViewData["Title"] = Model.CategoryId == 0 ? "Create Category" : "Edit Category";
+    ViewData["Title"] = Model.CategoryId is null or 0 ? "Create Category" : "Edit Category";
 }
 
 <div class="max-w-2xl mx-auto">
@@ -16,7 +16,7 @@
   <div class="flex items-center gap-3 mb-8">
     <div class="flex items-center justify-center w-10 h-10 rounded-cards bg-ink-black/5">
       <svg class="w-5 h-5 text-ink-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-        @if (Model.CategoryId == 0)
+        @if (Model.CategoryId is null or 0)
         {
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         }
@@ -82,7 +82,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             }
           </svg>
-          @(Model.CategoryId == 0 ? "Create Category" : "Save Changes")
+          @(Model.CategoryId is null or 0 ? "Create Category" : "Save Changes")
         </button>
       </div>
     </form>

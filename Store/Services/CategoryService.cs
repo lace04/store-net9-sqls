@@ -38,7 +38,7 @@ namespace Store.Services
 
     public async Task AddAsync(CategoryVM categoryVM)
     {
-      if (categoryVM.CategoryId == 0)
+      if (categoryVM.CategoryId is null or 0)
       {
         var category = new Category
         {
@@ -49,7 +49,7 @@ namespace Store.Services
       }
       else
       {
-        var category = await _categoryRepository.GetByIdAsync(categoryVM.CategoryId);
+        var category = await _categoryRepository.GetByIdAsync(categoryVM.CategoryId.Value);
         if (category != null)
         {
           category.Name = categoryVM.Name;

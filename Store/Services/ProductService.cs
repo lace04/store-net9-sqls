@@ -20,7 +20,7 @@ namespace Store.Services
       return query.AsEnumerable().Select(item => new ProductVM
       {
         ProductId = item.ProductId,
-        CategoryId = item.CategoryId,
+        Category = new CategoryVM { CategoryId = item.CategoryId, Name = item.Category?.Name },
         CategoryName = item.Category?.Name,
         Name = item.Name,
         Description = item.Description,
@@ -38,7 +38,7 @@ namespace Store.Services
       return new ProductVM
       {
         ProductId = product.ProductId,
-        CategoryId = product.CategoryId,
+        Category = new CategoryVM { CategoryId = product.CategoryId, Name = product.Category?.Name },
         Name = product.Name,
         Description = product.Description,
         Price = product.Price,
@@ -53,7 +53,7 @@ namespace Store.Services
       {
         var product = new Product
         {
-          CategoryId = productVM.CategoryId,
+          CategoryId = productVM.Category?.CategoryId ?? 0,
           Name = productVM.Name,
           Description = productVM.Description,
           Price = productVM.Price,
@@ -67,7 +67,7 @@ namespace Store.Services
         var product = await _productRepository.GetByIdAsync(productVM.ProductId);
         if (product != null)
         {
-          product.CategoryId = productVM.CategoryId;
+          product.CategoryId = productVM.Category?.CategoryId ?? 0;
           product.Name = productVM.Name;
           product.Description = productVM.Description;
           product.Price = productVM.Price;
