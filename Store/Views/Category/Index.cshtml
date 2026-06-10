@@ -1,37 +1,34 @@
 ﻿@model List<CategoryVM>
-  <div class="row justify-content-between mt-4">
-    <div class="col-4">
-      <h4>Categories</h4>
-    </div>
-    <div class="col-4 text-end">
-    <a href="#" class="btn btn-success">Create new</a>
-    </div>
-  </div>
 
-  <hr />
+<div class="flex justify-between items-center mb-4">
+  <h4 class="text-2xl font-semibold text-primary">Categories</h4>
+  <a href="#" class="inline-flex items-center px-4 py-2 bg-accent text-white text-sm font-medium rounded-md hover:bg-accent-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent">Create new</a>
+</div>
 
-  <table class="table table-striped">
+<hr class="mb-6 border-border" />
+
+<div class="overflow-x-auto bg-white rounded-lg shadow-sm border border-border">
+  <table class="min-w-full divide-y divide-border">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Description</th>
-        <th scope="col">Actions</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-primary uppercase tracking-wider">#</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-primary uppercase tracking-wider">Name</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-primary uppercase tracking-wider">Description</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-primary uppercase tracking-wider">Actions</th>
       </tr>
     </thead>
-
-    <tbody>
+    <tbody class="divide-y divide-border">
       @foreach (var category in Model) {
-        <tr>
-          <th scope="row">@category.CategoryId</th>
-          <td>@category.Name</td>
-          <td>@category.Description</td>
-          <td>
-            <a href="#" class="btn btn-primary">Edit</a>
-            <a href="#" class="btn btn-danger">Delete</a>
+        <tr class="hover:bg-gray-50 even:bg-surface">
+          <th scope="row" class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary">@category.CategoryId</th>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-light">@category.Name</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">@category.Description</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+            <a href="#" class="inline-flex items-center px-3 py-1.5 bg-primary text-white rounded-md hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">Edit</a>
+            <a href="#" class="inline-flex items-center px-3 py-1.5 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Delete</a>
           </td>
         </tr>
       }
     </tbody>
   </table>
-</Category>
+</div>

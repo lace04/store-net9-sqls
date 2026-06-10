@@ -5,86 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Store</title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
     <link
       rel="stylesheet"
       href="~/Store.styles.css"
       asp-append-version="true"
     />
   </head>
-  <body>
+  <body class="flex flex-col min-h-screen bg-surface">
     <header>
-      <nav
-        class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
-      >
-        <div class="container-fluid">
-          <a
-            class="navbar-brand"
-            asp-area=""
-            asp-controller="Home"
-            asp-action="Index"
-            >Store
-            </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div
-            class="navbar-collapse collapse d-sm-inline-flex justify-content-between"
-          >
-            <ul class="navbar-nav flex-grow-1">
-              <li class="nav-item">
-                <a
-                  class="nav-link text-dark"
-                  asp-area=""
-                  asp-controller="Home"
-                  asp-action="Index"
-                  >Home
-              </a>
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link text-dark"
-                  asp-area=""
-                  asp-controller="Home"
-                  asp-action="Privacy"
-                  >Privacy
-                  </a>
-              </li>
-              <li>
-                <a
-                  class="nav-link text-dark"
-                  asp-area=""
-                  asp-controller="Category"
-                  asp-action="Index"
-                  >Categories
-                  </a>
-              </li>
-            </ul>
+      <nav class="bg-white border-b border-border shadow-sm">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between h-16">
+            <div class="flex items-center">
+              <a class="text-xl font-bold text-primary" asp-area="" asp-controller="Home" asp-action="Index">Store</a>
+            </div>
+            <div class="hidden sm:flex sm:items-center sm:space-x-1">
+              <a class="text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+              <a class="text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+              <a class="text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
+            </div>
+            <div class="flex items-center sm:hidden">
+              <button id="menu-toggle" type="button" class="text-primary-light hover:text-primary focus:outline-none p-2">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div id="mobile-menu" class="hidden sm:hidden pb-4 space-y-1">
+            <a class="block text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="block text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <a class="block text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
           </div>
         </div>
       </nav>
     </header>
-    <div class="container">
-      <main role="main" class="pb-3">@RenderBody()</main>
-    </div>
+    <main class="flex-1">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+        @RenderBody()
+      </div>
+    </main>
 
-    <footer class="border-top footer text-muted">
-      <div class="container">
+    <footer class="border-t border-border bg-white">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 text-sm text-gray-500">
         &copy; 2026 - Store -
-        <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-accent hover:text-accent-light">Privacy</a>
       </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
   </body>
