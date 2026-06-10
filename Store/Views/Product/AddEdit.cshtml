@@ -5,22 +5,51 @@
 }
 
 @section Styles {
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/trix/dist/trix.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css">
   <style>
-    trix-editor {
-      width: 100%; box-sizing: border-box;
-      border: 1px solid var(--color-ash); border-top: none; border-radius: 0 0 4px 4px;
-      min-height: 200px; padding: 12px 16px; font-size: 14px; line-height: 1.6;
-      color: #333333; caret-color: #000000;
+    #editor-container { width: 100%; }
+    .ql-toolbar.ql-snow {
+      background: #fbf8f6;
+      border: 1px solid #dadada;
+      border-radius: 4px 4px 0 0;
+      font-family: 'Graphik', ui-sans-serif, system-ui, sans-serif;
+    }
+    .ql-toolbar.ql-snow .ql-formats { margin-right: 8px; }
+    .ql-toolbar.ql-snow .ql-picker-label,
+    .ql-toolbar.ql-snow .ql-picker-item,
+    .ql-toolbar.ql-snow button { color: #333333; }
+    .ql-toolbar.ql-snow .ql-stroke { stroke: #333333; }
+    .ql-toolbar.ql-snow .ql-fill { fill: #333333; }
+    .ql-toolbar.ql-snow button:hover .ql-stroke,
+    .ql-toolbar.ql-snow button.ql-active .ql-stroke,
+    .ql-toolbar.ql-snow .ql-picker-label:hover .ql-stroke,
+    .ql-toolbar.ql-snow .ql-picker-label.ql-active .ql-stroke { stroke: #000000; }
+    .ql-toolbar.ql-snow button:hover .ql-fill,
+    .ql-toolbar.ql-snow button.ql-active .ql-fill,
+    .ql-toolbar.ql-snow .ql-picker-label:hover .ql-fill,
+    .ql-toolbar.ql-snow .ql-picker-label.ql-active .ql-fill { fill: #000000; }
+    .ql-toolbar.ql-snow .ql-picker-label:hover,
+    .ql-toolbar.ql-snow .ql-picker-label.ql-active,
+    .ql-toolbar.ql-snow .ql-picker-item:hover,
+    .ql-toolbar.ql-snow .ql-picker-item.ql-selected { color: #000000; }
+    .ql-container.ql-snow {
+      border: 1px solid #dadada;
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      font-family: 'Graphik', ui-sans-serif, system-ui, sans-serif;
+      font-size: 14px;
+      color: #333333;
+      min-height: 200px;
+    }
+    .ql-editor {
+      padding: 12px 16px;
+      line-height: 1.6;
+      min-height: 200px;
       word-wrap: break-word; overflow-wrap: break-word; white-space: normal;
     }
-    trix-editor:focus { outline: none; border-color: var(--color-ink-black); }
-    trix-toolbar { background: #fbf8f6; border: 1px solid var(--color-ash); border-bottom: none; border-radius: 4px 4px 0 0; }
-    trix-toolbar .trix-button-row { overflow: hidden; flex-wrap: wrap; }
-    trix-toolbar .trix-button { border-radius: 0; }
-    trix-toolbar .trix-button-group { margin-bottom: 0; }
-    trix-toolbar [data-trix-button-group="history-tools"],
-    trix-toolbar [data-trix-button-group="file-tools"] { display: none; }
+    .ql-editor:focus { outline: none; }
+    .ql-editor a { color: #000000; text-decoration: underline; }
+    .ql-editor blockquote { border-left-color: #dadada; color: #6c6a6a; }
   </style>
 }
 
@@ -72,7 +101,7 @@
       <div>
         <label for="Description" class="block text-sm text-charcoal mb-1.5 tracking-[0.009em]">Description</label>
         <input type="hidden" asp-for="Description" id="Description" />
-        <trix-editor input="Description" class="rounded-cards"></trix-editor>
+        <div id="editor-container"></div>
         <span asp-validation-for="Description" class="text-smoke text-sm mt-1 block"></span>
       </div>
 
@@ -155,10 +184,27 @@
 
 @section Scripts {
   <partial name="_ValidationScriptsPartial" />
-  <script src="https://cdn.jsdelivr.net/npm/trix/dist/trix.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.min.js"></script>
   <script>
-    document.addEventListener('trix-change', function () {
-      $('#Description').trigger('change');
-    });
+    (function () {
+      var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'strike'],
+            ['blockquote', 'code-block'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['link'],
+            ['clean']
+          ]
+        }
+      });
+      var descInput = document.getElementById('Description');
+      quill.root.innerHTML = descInput.value || '';
+      quill.on('text-change', function () {
+        descInput.value = quill.root.innerHTML;
+        $(descInput).trigger('change');
+      });
+    })();
   </script>
 }
