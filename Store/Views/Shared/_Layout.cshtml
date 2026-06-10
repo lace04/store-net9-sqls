@@ -18,25 +18,25 @@
       asp-append-version="true"
     />
   </head>
-  <body class="flex flex-col min-h-screen bg-surface">
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-primary focus:rounded-md focus:shadow-lg">Skip to main content</a>
+  <body class="flex flex-col min-h-screen bg-cream-paper font-graphik">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-pure-white focus:text-ink-black focus:rounded-[4px]">Skip to main content</a>
     <header>
-      <nav aria-label="Main navigation" class="bg-white border-b border-border shadow-sm">
+      <nav aria-label="Main navigation" class="bg-pure-white border-b border-ash">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div class="flex justify-between h-16">
             <div class="flex items-center">
-              <a class="text-xl font-bold text-primary" asp-area="" asp-controller="Home" asp-action="Index" aria-label="Store home">Store</a>
+              <a class="text-xl font-medium text-ink-black tracking-wider" asp-area="" asp-controller="Home" asp-action="Index" aria-label="Store home">Store</a>
             </div>
             <div class="hidden sm:flex sm:items-center sm:space-x-1">
-              <a class="text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-              <a class="text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-              <a class="text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
+              <a class="text-charcoal hover:text-ink-black hover:bg-cream-paper px-3 py-2 rounded-pills text-sm" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+              <a class="text-charcoal hover:text-ink-black hover:bg-cream-paper px-3 py-2 rounded-pills text-sm" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+              <a class="text-charcoal hover:text-ink-black hover:bg-cream-paper px-3 py-2 rounded-pills text-sm" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
             </div>
             <div class="flex items-center sm:hidden">
               <button
                 id="menu-toggle"
                 type="button"
-                class="text-primary-light hover:text-primary focus:outline-none p-2"
+                class="text-charcoal hover:text-ink-black focus:outline-none p-2"
                 aria-label="Toggle navigation"
                 aria-controls="mobile-menu"
                 aria-expanded="false"
@@ -48,9 +48,9 @@
             </div>
           </div>
           <div id="mobile-menu" class="hidden sm:hidden pb-4 space-y-1" role="region" aria-label="Mobile navigation">
-            <a class="block text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-            <a class="block text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            <a class="block text-primary-light hover:text-primary hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
+            <a class="block text-charcoal hover:text-ink-black hover:bg-cream-paper px-3 py-2 rounded-pills text-sm" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="block text-charcoal hover:text-ink-black hover:bg-cream-paper px-3 py-2 rounded-pills text-sm" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <a class="block text-charcoal hover:text-ink-black hover:bg-cream-paper px-3 py-2 rounded-pills text-sm" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
           </div>
         </div>
       </nav>
@@ -61,10 +61,10 @@
       </div>
     </main>
 
-    <footer role="contentinfo" class="border-t border-border bg-white">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 text-sm text-gray-500">
+    <footer role="contentinfo" class="border-t border-ash bg-cream-paper">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 text-sm text-smoke">
         &copy; @DateTime.Now.Year - Store -
-        <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-accent hover:text-accent-light">Privacy</a>
+        <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-ink-black hover:text-charcoal underline">Privacy</a>
       </div>
     </footer>
     <script src="~/js/site.js" asp-append-version="true"></script>

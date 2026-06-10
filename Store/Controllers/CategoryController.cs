@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Store.Models;
 using Store.Services;
 
 namespace Store.Controllers
@@ -11,24 +12,59 @@ namespace Store.Controllers
       return View(categories);
     }
 
-    public IActionResult Create()
+    [HttpGet]
+    public async Task<IActionResult> AddEdit(int? id)
     {
-      return View();
+      if (id.HasValue)
+      {
+        var category = await _categoryService.GetByIdAsync(id.Value);
+        if (category == null)
+        {
+          return NotFound();
+        }
+        return View(category);
+      }
+      return View(new CategoryVM());
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit(int id)
+    public async Task<IActionResult> AddEdit(CategoryVM categoryVM)
     {
-      // TODO: Implement edit logic
-      return RedirectToAction(nameof(Index));
+      if (!ModelState.IsValid)
+      {
+        return View(categoryVM);
+      }
+
+      try
+      {
+        bool isNew = categoryVM.CategoryId == 0;
+        await _categoryService.AddAsync(categoryVM);
+        TempData["Success"] = isNew
+          ? "Category created successfully."
+          : "Category updated successfully.";
+        return RedirectToAction(nameof(Index));
+      }
+      catch (Exception ex)
+      {
+        ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+        return View(categoryVM);
+      }
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-      // TODO: Implement delete logic
+      try
+      {
+        await _categoryService.DeleteAsync(id);
+        TempData["Success"] = "Category deleted successfully.";
+      }
+      catch
+      {
+        TempData["Error"] = "An error occurred while deleting the category.";
+      }
       return RedirectToAction(nameof(Index));
     }
   }

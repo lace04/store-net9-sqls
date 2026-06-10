@@ -1,0 +1,94 @@
+﻿@model CategoryVM
+
+@{
+    ViewData["Title"] = Model.CategoryId == 0 ? "Create Category" : "Edit Category";
+}
+
+<div class="max-w-2xl mx-auto">
+  <!-- Breadcrumb -->
+  <nav aria-label="Breadcrumb" class="mb-6 text-sm text-smoke tracking-[0.009em]">
+    <a asp-action="Index" class="text-ink-black hover:text-charcoal">Categories</a>
+    <span class="mx-2">/</span>
+    <span class="text-charcoal">@ViewData["Title"]</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="flex items-center gap-3 mb-8">
+    <div class="flex items-center justify-center w-10 h-10 rounded-cards bg-ink-black/5">
+      <svg class="w-5 h-5 text-ink-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        @if (Model.CategoryId == 0)
+        {
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        }
+        else
+        {
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        }
+      </svg>
+    </div>
+    <div>
+      <h1 class="font-nantes text-ink-black text-[22px] leading-[1.45]">@ViewData["Title"]</h1>
+      <p class="text-caption text-smoke mt-0.5">Organize your products by adding or updating a category.</p>
+    </div>
+  </div>
+
+  <!-- Form card -->
+  <div class="bg-pure-white rounded-cards border border-ash p-6 sm:p-8">
+    <form method="post" class="space-y-6">
+      @Html.AntiForgeryToken()
+      <input type="hidden" asp-for="CategoryId" />
+
+      <!-- Name field -->
+      <div>
+        <label asp-for="Name" class="block text-sm text-charcoal mb-1.5 tracking-[0.009em]"></label>
+        <input asp-for="Name"
+          class="w-full px-4 py-2.5 border border-ash rounded-inputs placeholder-charcoal text-sm
+                 focus:outline-none focus:ring-2 focus:ring-ink-black/20 focus:border-ink-black"
+          placeholder="e.g. Electronics, Books, Clothing" />
+        <span asp-validation-for="Name" class="text-smoke text-sm mt-1 block"></span>
+      </div>
+
+      <!-- Description field -->
+      <div>
+        <label asp-for="Description" class="block text-sm text-charcoal mb-1.5 tracking-[0.009em]"></label>
+        <textarea asp-for="Description" rows="4"
+          class="w-full px-4 py-2.5 border border-ash rounded-inputs placeholder-charcoal resize-y text-sm
+                 focus:outline-none focus:ring-2 focus:ring-ink-black/20 focus:border-ink-black"
+          placeholder="e.g. Electronic devices and accessories"></textarea>
+        <span asp-validation-for="Description" class="text-smoke text-sm mt-1 block"></span>
+      </div>
+
+      <!-- Validation summary -->
+      <div asp-validation-summary="ModelOnly" class="text-ink-black text-sm" role="alert"></div>
+
+      <!-- Actions -->
+      <div class="flex items-center justify-between pt-2 border-t border-ash">
+        <a asp-action="Index" class="inline-flex items-center gap-1.5 text-sm text-smoke hover:text-charcoal">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to list
+        </a>
+        <button type="submit"
+          class="inline-flex items-center gap-2 px-6 py-2.5 bg-ink-black text-pure-white text-sm rounded-buttons
+                 hover:bg-charcoal focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ink-black">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            @if (Model.CategoryId == 0)
+            {
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            }
+            else
+            {
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            }
+          </svg>
+          @(Model.CategoryId == 0 ? "Create Category" : "Save Changes")
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+@section Scripts {
+  <partial name="_ValidationScriptsPartial" />
+}
