@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Store.Models;
 using Store.Services;
 
@@ -72,6 +73,11 @@ namespace Store.Controllers
       {
         await _productService.DeleteAsync(id);
         TempData["Success"] = "Product deleted successfully.";
+      }
+      catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("FK") == true || ex.InnerException?.Message.Contains("REFERENCE") == true)
+      {
+        var product = await _productService.GetByIdAsync(id);
+        TempData["Error"] = $"Cannot delete \"{product?.Name ?? "product"}\": it is referenced in existing orders. Remove the order references first.";
       }
       catch
       {

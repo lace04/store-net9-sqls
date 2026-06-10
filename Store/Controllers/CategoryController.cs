@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Store.Models;
 using Store.Services;
 
@@ -61,7 +62,12 @@ namespace Store.Controllers
         await _categoryService.DeleteAsync(id);
         TempData["Success"] = "Category deleted successfully.";
       }
-      catch
+      catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("FK") == true || ex.InnerException?.Message.Contains("REFERENCE") == true)
+      {
+        var category = await _categoryService.GetByIdAsync(id);
+        TempData["Error"] = $"Cannot delete \"{category?.Name ?? "category"}\": one or more products are still assigned to it. Reassign or delete those products first.";
+      }
+      catch (Exception)
       {
         TempData["Error"] = "An error occurred while deleting the category.";
       }

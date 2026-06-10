@@ -9,13 +9,14 @@ namespace Store.Services
   {
     public async Task<IEnumerable<CategoryVM>> GetAllAsync()
     {
-      var categories = await _categoryRepository.GetAllAsync();
+      var categories = await _categoryRepository.GetAllAsync(c => c.Products);
       return categories.Select(item =>
       new CategoryVM
       {
         CategoryId = item.CategoryId,
         Name = item.Name,
-        Description = item.Description
+        Description = item.Description,
+        ProductCount = item.Products.Count
       }
       ).ToList();
     }
